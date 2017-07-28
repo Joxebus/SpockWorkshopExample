@@ -4,6 +4,7 @@ import com.nearsoft.beans.Person
 import com.nearsoft.controller.PersonController
 import com.nearsoft.service.PersonService
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * This test is designed to validate the creation of a Person bean
@@ -15,7 +16,6 @@ class PersonSpec extends Specification{
 
     def setup(){
         personService = Mock()
-
         personController = new PersonController(
                 personService: personService
         )
@@ -33,6 +33,7 @@ class PersonSpec extends Specification{
         1 * personService.createPerson(name, phone)
     }
 
+    @Unroll("Testing with name #name and #phone")
     def "Test valid telephones"(){
         when:
         println "Testing with name:$name and phone:$phone"

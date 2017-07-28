@@ -7,11 +7,11 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
- * I here you will some test examples of different kind.
+ * Here you will have some test examples of different kind.
  */
 class MiscellaneousSpec extends Specification {
 
-    def "Tes old value with lists"(){
+    def "Test old value with lists"(){
         setup:
         def list = [1,2,3]
         when:
@@ -90,6 +90,21 @@ class MiscellaneousSpec extends Specification {
         urls.contains('http://github.com/Joxebus')
         urls.contains('http://nearsoft.com')
 
+    }
+
+    @Unroll("Calling closure with value #value")
+    def "Test closure call"(){
+        when:
+        def newValue = value.replace('e', 'a')
+
+        then:
+        myClosure.call(newValue)
+
+        where:
+        value               |   myClosure
+        "test"              |   { it.contains('a') }
+        "testee"            |   { it.toUpperCase().equals('TASTAA') }
+        "another example"   |   { it.size() == 15 }
     }
 
 
