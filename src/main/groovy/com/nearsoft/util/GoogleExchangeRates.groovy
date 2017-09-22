@@ -6,6 +6,8 @@ package com.nearsoft.util
 
 public class GoogleExchangeRates{
 
+    private static String URL = 'https://finance.google.com/finance/converter?'
+
     /**
      * Receive a list of maps with 2 keys 'from' and 'to'
      * this is used to get the currency rate
@@ -31,10 +33,9 @@ public class GoogleExchangeRates{
         response.from = from
         response.to = to
 
-        def urlString = 'https://www.google.com/finance/converter?'
         def queryString = "a=1&from=${from}&to=${to}"
 
-        def url = new URL(urlString+queryString)
+        def url = new URL(URL.concat(queryString))
         def connection = url.openConnection()
         connection.setRequestMethod("POST")
         connection.doOutput = true
