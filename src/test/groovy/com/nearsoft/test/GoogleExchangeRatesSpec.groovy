@@ -31,10 +31,10 @@ class GoogleExchangeRatesSpec extends Specification{
 
     def "Test exhange rest sevice with a list of rates"(){
         setup:
-        List currencyList = []
-        currencyList << [from:'USD', to:'EUR']
-        currencyList << [from:'USD', to:'MXN']
-        currencyList << [from:'MXN', to:'EUR']
+        ArrayList<Map<String,String>> currencyList = new ArrayList<>()
+        currencyList.add([from:'USD', to:'EUR'])
+        currencyList.add([from:'USD', to:'MXN'])
+        currencyList.add([from:'MXN', to:'EUR'])
         currencyList << [from:'EUR', to:'USD']
 
         def googleExchangeRates = new GoogleExchangeRates()

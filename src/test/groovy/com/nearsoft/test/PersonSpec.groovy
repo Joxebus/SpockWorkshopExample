@@ -23,21 +23,26 @@ class PersonSpec extends Specification{
 
     def "Test Mocking Service calls"(){
         given: "A name and a phone"
-        String name = "Omar"
-        String phone = "423-652-8724"
+        List params = ["Omar","423-652-8724"]
+        //String name = "Omar"
+        //String phone = "423-652-8724"
 
         when: "A person is created by the Controller"
-        personController.createPerson(name, phone)
+        personController.createPerson(*params)
 
         then: "The service must be called"
-        1 * personService.createPerson(name, phone)
+        1 * personService.createPerson(_,_)
     }
+
+
 
     @Unroll("Testing with name #name and #phone")
     def "Test valid telephones"(){
-        when:
-        println "Testing with name:$name and phone:$phone"
+        given: "Create a person to test valid phones"
         Person person = new Person()
+
+        when: "Set values to test the person"
+        //println "Testing with name:$name and phone:$phone"
         person.setName(name)
         person.setPhone(phone)
 
@@ -47,7 +52,7 @@ class PersonSpec extends Specification{
         where:
         name    | phone
         'Amaia' | "442-123-4560"
-        'Jorge' | "662-653-4567"
+        'Jorge' | "662-6534567"
         'David' | "415-345-4568"
         'Diego' | "442-123-4569"
 
@@ -65,7 +70,7 @@ class PersonSpec extends Specification{
 
         where:
         name    | phone
-        'Amaia' | "442-1234560"
+        'Amaia' | "442-123-4560"
         'Jorge' | "662653-4567"
         'David' | "415-345--4568"
         'Diego' | "(442)-123-4569"
@@ -97,7 +102,7 @@ class PersonSpec extends Specification{
         where: "values for test cases."
         name1   | phone1            | name2   | phone2          || expected
         'Amaia' | "442-123-4560"    | 'Amaia' | "442-123-4560"  || true
-        'Jorge' | "662-653-4567"    | 'Omar'  | "662-653-4567"  || false
+        'Jorge' | "662-653-4567"    | 'Omar'  | "662-653-4567"  || true
         'David' | "415-345-4568"    | 'David' | "415-345-4568"  || true
         'Diego' | "442-123-4569"    | 'DIEGO' | "442-123-4569"  || false
 

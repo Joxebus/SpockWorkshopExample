@@ -1,5 +1,6 @@
 package com.nearsoft.test
 
+import com.nearsoft.BadWords
 import com.nearsoft.beans.Feed
 import com.nearsoft.beans.FeedEntry
 import com.nearsoft.categories.ExtractUrlFromText
@@ -23,7 +24,7 @@ class MiscellaneousSpec extends Specification {
 
     @Unroll("Running test with title '#titleT' and link '#linkT'")
     def "Feed canonical doesn't includes link and description on toString()"(){
-        when:
+        setup:
         FeedEntry entry = new FeedEntry()
         entry.with {
             title = titleT
@@ -34,9 +35,11 @@ class MiscellaneousSpec extends Specification {
 
         }
 
-        then:
+        println entry
+
+        expect:
         !entry.toString().contains('link')
-        !entry.toString().contains('description')
+        !entry.toString().contains('Description')
         entry.toString().contains(titleT)
         entry.toString().contains(authorT)
         entry.toString().contains(pubDateT)
@@ -76,7 +79,7 @@ class MiscellaneousSpec extends Specification {
 
     def "Test ExtractUrlFromText category."(){
         setup:
-        String someText = "This text is an example, go to http://github.com/Joxebus for more examples and don't forget to visit http://nearsoft.com"
+        String someText = "This text is an example, go to http://github.com/Joxebus for more examples and don't forget to visit http://nearsoft.com and http://www.google.com"
 
         when:
         List urls = []
@@ -86,10 +89,10 @@ class MiscellaneousSpec extends Specification {
         println urls
 
         then:
-        urls.size() == 2
+        urls.size() == 3
         urls.contains('http://github.com/Joxebus')
         urls.contains('http://nearsoft.com')
-
+        urls.contains('http://www.google.com')
     }
 
     @Unroll("Calling closure with value #value")
@@ -103,9 +106,24 @@ class MiscellaneousSpec extends Specification {
         where:
         value               |   myClosure
         "test"              |   { it.contains('a') }
-        "testee"            |   { it.toUpperCase().equals('TASTAA') }
+        "tasta"             |   { it.toUpperCase().equals('TASTA') }
         "another example"   |   { it.size() == 15 }
     }
+
+    def "Test if a word is a bad word"(){
+        expect:
+        BadWords.censureWord(word) == expected
+
+        where:
+        word            | expected
+        "hola"          | "####"
+        "estacionar"    | "estacionar"
+        "plasmar"       | "#######"
+        "HOME"          | "####"
+        "registro"      | "registro"
+        "PALADAR"       | "#######"
+    }
+
 
 
 }

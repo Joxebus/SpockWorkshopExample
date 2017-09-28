@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
  */
 public class BadWords {
 
-    public String validateWord(String word) {
-        String badWordRegex = "(^P[A-Z]*R$) | (^H[A-Z]*O[A-Z]*)";
+    public static String censureWord(String word) {
+        String badWordRegex = "(^(P|p)[A-Za-z]*(R|r)$)|(^(H|h)[A-Za-z]*(O|o)[A-Za-z]*)";
         if(Pattern.matches(badWordRegex, word)){
             word = new String(new char[word.length()]).replace('\0', '#');
         }
