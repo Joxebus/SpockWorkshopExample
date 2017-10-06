@@ -13,11 +13,11 @@ import spock.lang.Unroll
 class MiscellaneousSpec extends Specification {
 
     def "Test old value with lists"(){
-        setup:
+        given: "A list of 3 elements"
         def list = [1,2,3]
-        when:
+        when: "Adds a new element"
         list.add(4)
-        then:
+        then: "The old value will be 3 and the actual should be 4"
         3 == old(list.size())
         4 == list.size()
     }

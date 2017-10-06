@@ -28,17 +28,17 @@ class PersonSpec extends Specification{
         //String phone = "423-652-8724"
 
         when: "A person is created by the Controller"
-        personController.createPerson(*params)
+        personController.create(*params)
 
         then: "The service must be called"
-        1 * personService.createPerson(_,_)
+        1 * personService.create(_,_)
     }
 
 
 
     @Unroll("Testing with name #name and #phone")
     def "Test valid telephones"(){
-        given: "Create a person to test valid phones"
+        given: "A person"
         Person person = new Person()
 
         when: "Set values to test the person"
@@ -46,7 +46,7 @@ class PersonSpec extends Specification{
         person.setName(name)
         person.setPhone(phone)
 
-        then:
+        then: "The phone must match with the regex"
         person.phone ==~ /(\d{3})-(\d{3})-(\d{4})/
 
         where:
@@ -58,6 +58,7 @@ class PersonSpec extends Specification{
 
     }
 
+    //@Unroll
     def "Test invalid telephones"(){
         when:
         println "Testing with name:$name and phone:$phone"
@@ -69,14 +70,13 @@ class PersonSpec extends Specification{
         thrown RuntimeException
 
         where:
-        name    | phone
-        'Amaia' | "442-123-4560"
-        'Jorge' | "662653-4567"
-        'David' | "415-345--4568"
-        'Diego' | "(442)-123-4569"
+
+        phone << ["442-12345-60", "662653-4567", "415-345--4568", "(442)-1234569"]
+        name << ['Amaia', 'Jorge', 'David', 'Diego']
 
     }
 
+    @Unroll
     def "Test @Canonical methods"(){
         when: "Create 2 Person instance with values: "
         Person p1 = new Person()
