@@ -1,6 +1,6 @@
 # SpockWorkshopExample
 
-This repository contains the examples for the Spock talk.
+This repository contains the examples for the Spock Workshop.
 
 ## Content
   - Fixture Methods
